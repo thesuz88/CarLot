@@ -8,6 +8,7 @@ public class CarApp {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         Car car = new Car();
+
         Validator validate = new Validator();
         ArrayList<Car> carList = new ArrayList<>();
 
@@ -23,21 +24,25 @@ public class CarApp {
             String userModel = scan.nextLine();
             car.setModel(userModel);
             System.out.print("Enter car #" + (i + 1) + " year:");
-            int userYear = scan.nextInt();
+            int userYear = validate.numberIsBetweenTwoNumbers(1000, 9999);
             car.setYear(userYear);
             System.out.print("Enter car #" + (i + 1) + " price:");
-            double userPrice = scan.nextDouble();
+            double userPrice = validate.numberIsDouble();
             car.setPrice(userPrice);
+            System.out.println("Is the car used? (y/n)");
 
-            carList.add(new Car(userCar, userModel, userYear, userPrice));
-
-            System.out.println("Current Inventory: ");
-            for (Car list : carList) {
-
-                System.out.print(list);
-
+            if (validate.validateUsed()) {
+                System.out.println("Enter car #" + (i + 1) + " milage:");
+                int userMilage = validate.numberIsPositiveInteger(0);
+                carList.add(new UsedCar(userCar, userModel, userYear, userPrice, userMilage));
+            } else {
+                carList.add(new Car(userCar, userModel, userYear, userPrice));
             }
-            scan.nextLine();
+
+        }
+        System.out.println("Current Inventory: ");
+        for (Car list : carList) {
+            System.out.print(list + "\n");
         }
 
 
